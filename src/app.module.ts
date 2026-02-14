@@ -8,6 +8,7 @@ import { EtudiantModule } from './etudiant/etudiant.module';
 import { ProfesseurModule } from './professeur/professeur.module';
 import { ChefDepartementModule } from './chef-departement/chef-departement.module';
 import { SpecialiteModule } from './specialite/specialite.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -21,7 +22,7 @@ autoLoadEntities:true,
 entities:[__dirname + "/**/*.entity{.ts,.js}"],
 synchronize:true,
 
-  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, SpecialiteModule],
+  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, SpecialiteModule, NotificationModule],
   controllers: [AppController],
   providers: [AppService],
 })
