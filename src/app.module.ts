@@ -11,6 +11,7 @@ import { AnnonceModule } from './annonce/annonce.module';
 import { SalleModule } from './salle/salle.module';
 import { SeanceModule } from './seance/seance.module';
 import { AnneeUniversitaireModule } from './annee-universitaire/annee-universitaire.module';
+import { SemestreModule } from './semestre/semestre.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -24,7 +25,7 @@ autoLoadEntities:true,
 entities:[__dirname + "/**/*.entity{.ts,.js}"],
 synchronize:true,
 
-  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule],
+  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule],
   controllers: [AppController],
   providers: [AppService],
 })
