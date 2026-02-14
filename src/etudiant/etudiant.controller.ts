@@ -91,8 +91,27 @@ message :"etudiant  not found"+error.message
 
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() updateEtudiantDto: UpdateEtudiantDto ,@Res() response) {
+@UseInterceptors(FileInterceptor("photo", {
+      storage:diskStorage({
+        destination: './stockage',
+        filename: (req, file, cb) => {
+          cb(null , `${new Date().getTime()}${extname(file.originalname)}`)}
+      })
+    }))
+
+
+
+
+
+  async update(@Param('id') id: number, @Body() updateEtudiantDto: UpdateEtudiantDto ,@Res() response ,@UploadedFile() photo) {
   try {
+
+const newphoto=photo? photo.filename : null
+if(newphoto){
+  updateEtudiantDto.photo=newphoto
+}
+
+    updateEtudiantDto.photo=photo? photo.filename : null
     const etudiant=await this.etudiantService.update(id,updateEtudiantDto)
     return response.status(HttpStatus.OK).json({
         message:" etudaint update avec succsefly",etudiant
@@ -104,6 +123,13 @@ statusCode : 400,
 message :"etudiant not found"+error.message
     })
    }  }
+
+
+
+
+
+
+
 
 
 
