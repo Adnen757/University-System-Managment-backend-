@@ -1,0 +1,71 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateMatiereDto } from './dto/create-matiere.dto';
+import { UpdateMatiereDto } from './dto/update-matiere.dto';
+import { Matiere } from './entities/matiere.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+@Injectable()
+export class MatiereService {
+
+constructor(
+   @InjectRepository(Matiere) private matiereRepository:Repository<Matiere>
+  ){
+
+  }
+
+
+
+  async create(createMatiereDto: CreateMatiereDto):Promise<Matiere> {
+     const newMatiere =await this.matiereRepository.create(createMatiereDto)
+   return this.matiereRepository.save(newMatiere)
+  }
+
+
+
+
+async  findAll():Promise<Matiere[]> {
+   const matieres=await this.matiereRepository.find()
+                    if(matieres.length===0){
+                      throw new NotFoundException("data not found")
+                    }
+                    return matieres
+  }
+
+
+
+ async findOne(id: number):Promise<Matiere> {
+        const matiere =await this.matiereRepository.findOneBy({id})
+if(!matiere){
+  throw new NotFoundException("matiere not found")
+}
+return matiere
+  }
+
+
+
+
+
+ async update(id: number, updateMatiereDto: UpdateMatiereDto):Promise<Matiere> {
+     const matiere =await this.matiereRepository.findOneBy({id})
+if(!matiere){
+  throw new NotFoundException("matiere not found")
+}
+const updatedMatiere= await this.matiereRepository.preload({...updateMatiereDto,id})
+if(!updatedMatiere){
+  throw new NotFoundException(`can not update a #${id} matiere `)
+
+}
+return this.matiereRepository.save(updatedMatiere)
+  }
+
+ async remove(id: number) {
+       const matiere =await this.matiereRepository.findOneBy({id})
+if(!matiere){
+  throw new NotFoundException("matiere not found")
+ 
+}
+ await this.matiereRepository.delete(id)
+ return id
+  }
+  }

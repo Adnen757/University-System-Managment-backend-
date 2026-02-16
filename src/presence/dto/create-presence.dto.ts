@@ -1,0 +1,28 @@
+import { IsNotEmpty, IsString } from "class-validator";
+export enum presenceType{
+    PRESENT="PRESENT",
+    ABSENT="ABSENT",
+    RETARD="RETARD",
+    JUSTIFIE="JUSTIFIE",    
+    
+}
+export enum methodeType{
+    MANUEL="MANUEL",
+    EMPREINTE="EMPREINTE",
+    FACIAL="FACIAL",
+       
+    
+}
+export class CreatePresenceDto {
+
+
+    @IsNotEmpty()
+    statut: presenceType;
+
+    @IsNotEmpty()
+    @IsString()
+    heureArrivee: string;
+
+     @IsNotEmpty()
+    methode: methodeType;
+}
