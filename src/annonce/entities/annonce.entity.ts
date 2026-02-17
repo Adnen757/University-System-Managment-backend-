@@ -1,5 +1,13 @@
+import { IsNumber, IsOptional } from "class-validator";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+export enum annonceType{
+        ETUDIANT="ETUDIANT",
+    CHEF_DEPARTEMENT="CHEF_DEPARTEMENT",
+    ENSEIGNANT="ENSEIGNANT",
+        
+    
+}
 @Entity("annonce")
 export class Annonce {
 @PrimaryGeneratedColumn()
@@ -11,12 +19,12 @@ export class Annonce {
  contenu:string 
 @Column()
  datePublication:string
-@Column()
- cibleRole:string
+@Column({type:"enum", enum:annonceType})
+ cibleRole:annonceType
 @Column()
  cibleDepartement:string
 
 
-@OneToMany(()=>User,(user)=>user.annonces)
-users:User[]
+@OneToMany(()=>User,(user)=>user.annonce)
+user:User
 }

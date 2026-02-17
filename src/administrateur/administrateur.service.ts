@@ -1,26 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAdministrateurDto } from './dto/create-administrateur.dto';
 import { UpdateAdministrateurDto } from './dto/update-administrateur.dto';
+import { Administrateur } from './entities/administrateur.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AdministrateurService {
-  create(createAdministrateurDto: CreateAdministrateurDto) {
-    return 'This action adds a new administrateur';
+
+constructor(
+   @InjectRepository(Administrateur) private administrateurRepository:Repository<Administrateur>
+  ){
+
+  }
+  
+  
+ async create(createAdministrateurDto: CreateAdministrateurDto):Promise<Administrateur> {
+    const newAdministrateur =await this.administrateurRepository.create({...createAdministrateurDto , role:"administrateur"})
+   return this.administrateurRepository.save(newAdministrateur)
   }
 
-  findAll() {
-    return `This action returns all administrateur`;
+
+
+
+
+ async findAll(): Promise<Administrateur[]> {
+     const administrateur=await this.administrateurRepository.find()
+           if(administrateur.length===0){
+             throw new NotFoundException("data not found")
+           }
+           return administrateur
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} administrateur`;
+
+
+
+
+ async findOne(id: number): Promise<Administrateur> {
+       const administrateur =await this.administrateurRepository.findOneBy({id})
+if(!administrateur){
+  throw new NotFoundException("administrateur not found")
+}
+return administrateur
   }
 
-  update(id: number, updateAdministrateurDto: UpdateAdministrateurDto) {
-    return `This action updates a #${id} administrateur`;
+
+
+ async update(id: number, updateAdministrateurDto: UpdateAdministrateurDto) :Promise<Administrateur> {
+     const administrateur =await this.administrateurRepository.findOneBy({id})
+if(!administrateur){
+  throw new NotFoundException("administrateur not found")
+}
+const updateAdministrateur= await this.administrateurRepository.preload({...updateAdministrateurDto,id})
+if(!updateAdministrateur){
+  throw new NotFoundException(`can not update a #${id} administrateur`)
+
+}
+return this.administrateurRepository.save(updateAdministrateur)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} administrateur`;
+
+
+
+ async remove(id: number) {
+     const administrateur =await this.administrateurRepository.findOneBy({id})
+if(!administrateur){
+  throw new NotFoundException("administrateur not found")
+ 
+}
+ await this.administrateurRepository.delete(id)
+ return id
   }
 }

@@ -3,12 +3,15 @@ import { CreateAnnonceDto } from './dto/create-annonce.dto';
 import { UpdateAnnonceDto } from './dto/update-annonce.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Annonce } from './entities/annonce.entity';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AnnonceService {
 constructor(
-   @InjectRepository(Annonce) private annonceRepository:Repository<Annonce>
+   @InjectRepository(Annonce) private annonceRepository:Repository<Annonce>,
+      @InjectRepository(User) private userRepository:Repository<User>
+
   ){
 
   }
@@ -17,12 +20,22 @@ constructor(
 
 
  async create(createAnnonceDto: CreateAnnonceDto):Promise<Annonce> {
-      const newannonce =await this.annonceRepository.create(createAnnonceDto)
+
+
+const user = await this.userRepository.findOne({where:{id:createAnnonceDto.user}, relations:["annonce"]})
+    if(!user){
+      throw new NotFoundException("user not found")
+
+    }
+
+      const newannonce =await this.annonceRepository.create({...createAnnonceDto , user:user})
    return this.annonceRepository.save(newannonce)
   }
 
 
 
+
+  
 
 
 async  findAll():Promise<Annonce[]> {
@@ -54,11 +67,13 @@ return annonce
 
 
  async update(id: number, updateAnnonceDto: UpdateAnnonceDto ):Promise<Annonce> {
+
+
    const annonce =await this.annonceRepository.findOneBy({id})
 if(!annonce){
   throw new NotFoundException("annonce not found")
 }
-const updateannonce= await this.annonceRepository.preload({...updateAnnonceDto,id})
+const updateannonce= await this.annonceRepository.preload({...updateAnnonceDto as DeepPartial<Annonce>,id})
 if(!updateannonce){
   throw new NotFoundException(`can not update a #${id} annonce`)
 

@@ -1,5 +1,11 @@
-import { IsNotEmpty, IsString } from "class-validator";
-
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+export enum annonceType{
+        ETUDIANT="ETUDIANT",
+    CHEF_DEPARTEMENT="CHEF_DEPARTEMENT",
+    ENSEIGNANT="ENSEIGNANT",
+        
+    
+}
 export class CreateAnnonceDto {
 
 @IsNotEmpty()
@@ -15,10 +21,15 @@ contenu:string
 datePublication:string
 
 @IsNotEmpty()
-@IsString()
-cibleRole:string
+cibleRole:annonceType
+
 
 @IsNotEmpty()
 @IsString()
 cibleDepartement:string
+
+
+@IsNumber()
+@IsOptional()
+user:number
 }

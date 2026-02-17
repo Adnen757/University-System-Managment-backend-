@@ -17,7 +17,7 @@ export class AnnonceController {
        } catch (error) {
         return response.status(HttpStatus.BAD_REQUEST).json({
    statusCode : 400,
-   message :"error lors de la creation de  annonce"+error.message
+   message :"error lors de la creation de  annonce"+error
        })
   }
   }
