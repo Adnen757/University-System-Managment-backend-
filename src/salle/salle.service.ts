@@ -4,80 +4,63 @@ import { UpdateSalleDto } from './dto/update-salle.dto';
 import { Salle } from './entities/salle.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Seance } from 'src/seance/entities/seance.entity';
 
 @Injectable()
 export class SalleService {
+  constructor(
+    @InjectRepository(Salle)
+    private readonly salleRepository: Repository<Salle>,
+    @InjectRepository(Seance)
+    private readonly seanceRepository: Repository<Seance>
+  ) {}
 
-constructor(
-   @InjectRepository(Salle) private salleRepository:Repository<Salle>
-  ){
-
+  async create(createSalleDto: CreateSalleDto): Promise<Salle> {
+    const salle = this.salleRepository.create(createSalleDto);
+    return this.salleRepository.save(salle);
   }
 
+  async findAll(): Promise<Salle[]> {
+    const salles = await this.salleRepository.find({
+      relations: ["seances"],
+    });
 
-async  create(createSalleDto: CreateSalleDto) :Promise<Salle> {
-      const newSalle =await this.salleRepository.create(createSalleDto)
-   return this.salleRepository.save(newSalle)
+    if (!salles.length) {
+      throw new NotFoundException("No salles found");
+    }
+    return salles;
   }
 
+  async findOne(id: number): Promise<Salle> {
+    const salle = await this.salleRepository.findOne({
+      where: { id },
+      relations: ["seances"],
+    });
 
-
-
-
-
-async  findAll():Promise<Salle[]> {
-     const salle=await this.salleRepository.find()
-              if(salle.length===0){
-                throw new NotFoundException("data not found")
-              }
-              return salle
+    if (!salle) {
+      throw new NotFoundException("Salle not found");
+    }
+    return salle;
   }
 
+  async update(id: number, dto: UpdateSalleDto): Promise<Salle> {
+    const salle = await this.salleRepository.preload({
+      id,
+      ...dto,
+    });
 
+    if (!salle) {
+      throw new NotFoundException(`Salle #${id} not found`);
+    }
 
+    return this.salleRepository.save(salle);
+  }
 
+  async remove(id: number): Promise<void> {
+    const result = await this.salleRepository.delete(id);
 
-
-
-async  findOne(id: number):Promise<Salle> {
-   const salle =await this.salleRepository.findOneBy({id})
-if(!salle){
-  throw new NotFoundException("salle not found")
+    if (!result.affected) {
+      throw new NotFoundException("Salle not found");
+    }
+  }
 }
-return salle
-  }
-
-
-
-
-
-
- async update(id: number, updateSalleDto: UpdateSalleDto) :Promise<Salle> {
-      const salle =await this.salleRepository.findOneBy({id})
-if(!salle){
-  throw new NotFoundException("salle not found")
-}
-const updatesalle= await this.salleRepository.preload({...updateSalleDto,id})
-if(!updatesalle){
-  throw new NotFoundException(`can not update a #${id} salle `)
-
-}
-return this.salleRepository.save(updatesalle)
-  }
-
-
-
-
-
-
- async remove(id: number) {
-       const salle =await this.salleRepository.findOneBy({id})
-if(!salle){
-  throw new NotFoundException("salle not found")
- 
-}
- await this.salleRepository.delete(id)
- return id
-  }  
-  }
-

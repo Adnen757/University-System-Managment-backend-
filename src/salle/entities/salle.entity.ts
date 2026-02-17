@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Seance } from "src/seance/entities/seance.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 @Entity("salle")
 export class Salle {
 @PrimaryGeneratedColumn()
@@ -13,4 +14,7 @@ export class Salle {
     @Column()
     equipement:string
 
+
+@OneToMany(() => Seance, seance => seance.salle,)
+seances: Seance[];
 }
