@@ -1,5 +1,6 @@
+import { Seance } from "src/seance/entities/seance.entity";
 import { User } from "src/user/entities/user.entity";
-import { ChildEntity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { ChildEntity, Column, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @ChildEntity("Professeur")
 export class Professeur extends User{
@@ -9,4 +10,9 @@ export class Professeur extends User{
 ChargeHoraireSemestrielle:string
 
 
+@OneToOne(() => Seance , seance => seance.professeur,{
+    nullable:true,
+    onDelete:'SET NULL' 
+})
+seance: Seance;
 }

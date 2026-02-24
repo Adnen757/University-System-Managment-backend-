@@ -14,6 +14,8 @@ import { AnneeUniversitaireModule } from './annee-universitaire/annee-universita
 import { SemestreModule } from './semestre/semestre.module';
 import { EvaluationModule } from './evaluation/evaluation.module';
 import { NotificationModule } from './notification/notification.module';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -27,7 +29,7 @@ autoLoadEntities:true,
 entities:[__dirname + "/**/*.entity{.ts,.js}"],
 synchronize:true,
 
-  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, EvaluationModule , NotificationModule],
+  }), ConfigModule.forRoot({isGlobal: true}),UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, EvaluationModule , NotificationModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

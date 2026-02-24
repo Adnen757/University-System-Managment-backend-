@@ -56,6 +56,16 @@ if(!updateuser){
 return this.userRepository.save(updateuser)
   }
 
+  
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOneBy({ email });
+    if(!user){
+      throw new NotFoundException('user not found')
+    }
+    return user
+  }
+  
+
 
 
 

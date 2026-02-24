@@ -12,5 +12,6 @@ import { Notification } from 'src/notification/entities/notification.entity';
   imports:[TypeOrmModule.forFeature([User,Etudiant,Professeur,ChefDepartement, Notification])],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService]
 })
 export class UserModule {}
