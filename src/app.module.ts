@@ -12,6 +12,7 @@ import { SalleModule } from './salle/salle.module';
 import { SeanceModule } from './seance/seance.module';
 import { AnneeUniversitaireModule } from './annee-universitaire/annee-universitaire.module';
 import { SemestreModule } from './semestre/semestre.module';
+<<<<<<< HEAD
 import { PresenceModule } from './presence/presence.module';
 import { JustificatifAbsenceModule } from './justificatif-absence/justificatif-absence.module';
 import { MatiereModule } from './matiere/matiere.module';
@@ -22,20 +23,27 @@ import { AdministrateurModule } from './administrateur/administrateur.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer/dist/mailer.module';
+=======
+import { EvaluationModule } from './evaluation/evaluation.module';
+import { NotificationModule } from './notification/notification.module';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+>>>>>>> hamed/feature-auth-hamed
 
 @Module({
   imports: [TypeOrmModule.forRoot({
-type:"postgres",
-host:"localhost",
-port:5432,
-username:"postgres",
-password:"1234",
-database:"projet1",
-autoLoadEntities:true,
-entities:[__dirname + "/**/*.entity{.ts,.js}"],
-synchronize:true,
+    type: "postgres",
+    host: "localhost",
+    port: 5432,
+    username: "postgres",
+    password: "12345",
+    //database:"projet1",
+    autoLoadEntities: true,
+    entities: [__dirname + "/**/*.entity{.ts,.js}"
 
 
+<<<<<<< HEAD
 
 
   }),
@@ -58,7 +66,32 @@ synchronize:true,
     }),
   
   ConfigModule.forRoot({isGlobal:true}), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, PresenceModule, JustificatifAbsenceModule, MatiereModule, NoteModule, RessourcPedagogiquesModule, MessageModule, AdministrateurModule, AuthModule],
+=======
+    ],
+    synchronize: true,
+
+
+
+  }), MailerModule.forRoot({
+    transport: {
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // Use TLS
+      tls: {
+        rejectUnauthorized: false
+      },
+      auth: {
+        user: "hamedblg29@gmail.com",
+        pass: "fwan skfx vfhm gswd",
+      },
+    },
+    // defaults: {
+    //   from:"Hamed  <hamedblg29@gmail.com>",
+    // },
+  }), ConfigModule.forRoot({ isGlobal: true }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, EvaluationModule, NotificationModule, AuthModule],
+>>>>>>> hamed/feature-auth-hamed
   controllers: [AppController],
   providers: [AppService],
+
 })
-export class AppModule {}
+export class AppModule { }

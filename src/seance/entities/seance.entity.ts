@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { join } from "path";
+import { Professeur } from "src/professeur/entities/professeur.entity";
+import { Salle } from "src/salle/entities/salle.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum SeanceType{
     TD="TD",
@@ -28,6 +31,17 @@ export class Seance {
  @Column()
  groupe:string
  
-    
+@OneToOne(() => Professeur, professeur => professeur.seance,{
+    nullable:false,
+    onDelete:'CASCADE' 
+})
+@JoinColumn({name:"professeur_id"})
+professeur: Professeur;
 
+@ManyToOne(() => Salle, salle => salle.seances,{
+     nullable:false,
+     onDelete:'CASCADE' 
+})
+@JoinColumn({name:"salle_id"})
+salle: Salle; 
 }

@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
-import { IsDate, IsNotEmpty, IsString } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Salle } from "src/salle/entities/salle.entity";
 export enum SeanceType{
     TD="TD",
     TP="TP",
@@ -35,4 +36,7 @@ heureFin:string
 @IsString()
 groupe:string
 
+@IsNotEmpty()
+@IsNumber()
+salle:number
 }

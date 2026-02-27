@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { Salle } from "../entities/salle.entity";
 
 export class CreateSalleDto {
 @IsNotEmpty()
@@ -17,5 +18,8 @@ batiement:string
 @IsNotEmpty()
 @IsString()
 equipement:string
+
+@IsNotEmpty()
+seance:number
 
 }

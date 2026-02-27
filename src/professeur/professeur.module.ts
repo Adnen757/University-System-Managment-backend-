@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ProfesseurService } from './professeur.service';
 import { ProfesseurController } from './professeur.controller';
-import { TypeORMError } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Professeur } from './entities/professeur.entity';
+import { Seance } from 'src/seance/entities/seance.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Professeur])],
+  imports:[TypeOrmModule.forFeature([Professeur,Seance])],
   controllers: [ProfesseurController],
   providers: [ProfesseurService],
 })

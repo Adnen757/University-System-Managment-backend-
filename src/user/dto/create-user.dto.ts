@@ -5,6 +5,10 @@ export class CreateUserDto {
    @IsNotEmpty()
     fullname:string
 
+    @IsString()
+    @IsOptional()
+    refreshToken:string | null
+
 
 
     @IsEmail()
@@ -16,6 +20,7 @@ export class CreateUserDto {
     @IsString()
     password:string
 
+<<<<<<< HEAD
     @IsString()
     @IsOptional()
     role:string
@@ -23,6 +28,9 @@ export class CreateUserDto {
 @IsOptional()
 @IsString()
 refreshToken:string |  null
+=======
+   
+>>>>>>> hamed/feature-auth-hamed
 
 
 }

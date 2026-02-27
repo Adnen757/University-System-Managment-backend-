@@ -71,6 +71,16 @@ if(!updateuser){
 return this.userRepository.save(updateuser)
   }
 
+  
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.userRepository.findOneBy({ email });
+    if(!user){
+      throw new NotFoundException('user not found')
+    }
+    return user
+  }
+  
+
 
 
 
@@ -84,6 +94,7 @@ if(!user){
  return id
   }
 
+<<<<<<< HEAD
 
 
 
@@ -92,6 +103,41 @@ if(!user){
 
 async updateRefreshToken(id: number, refreshToken: string | null) {
 await this.userRepository.update(id, { refreshToken });
+=======
+  async updateToken(id: any, token: string) {
+    const user = await this.userRepository.update(id, {
+      refreshToken: token,
+    });
+    if (user.affected == 0) {
+      throw new NotFoundException('user not found !');
+    }
+    return this.userRepository.findOne({ where: { id } });
+  }
+
+  async saveUser(user: User): Promise<User> {
+    return this.userRepository.save(user);
+  }
+  async updateRefreshToken(id: number, refreshToken: string | null) {
+await this.userRepository.update(id, { refreshToken });
+}
+
+async updatePassword(userId: number, oldPassword: string, newPassword: string) {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    const matching = await argon2.verify(user.password, oldPassword);
+    if (!matching) {
+      throw new BadRequestException('old password is incorrect');
+    }
+    user.password= newPassword;
+    await this.userRepository.save(user);
+    return {
+      success: true,
+      message: 'password updated successfully',
+    };
+  }
+>>>>>>> hamed/feature-auth-hamed
 }
 
   async updateToken(id: any, token: string) {

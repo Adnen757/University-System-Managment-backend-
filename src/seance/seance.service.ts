@@ -2,27 +2,36 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSeanceDto } from './dto/create-seance.dto';
 import { UpdateSeanceDto } from './dto/update-seance.dto';
 import { Seance } from './entities/seance.entity';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Salle } from 'src/salle/entities/salle.entity';
 
 @Injectable()
 export class SeanceService {
 
 
 constructor(
-   @InjectRepository(Seance) private seanceRepository:Repository<Seance>
+   @InjectRepository(Seance) private readonly seanceRepository:Repository<Seance>,
+   @InjectRepository(Salle) private readonly salleRepository: Repository<Salle>
   ){
 
   }
 
 
 
-async  create(createSeanceDto: CreateSeanceDto):Promise<Seance> {
-     const newseance =await this.seanceRepository.create(createSeanceDto)
-   return this.seanceRepository.save(newseance)
+async create(createSeanceDto: CreateSeanceDto): Promise<Seance> {
+    const salle = await this.salleRepository.findOne({where:{id:createSeanceDto.salle}, relations:["seances"]});
+
+    if (!salle) {
+      throw new NotFoundException("Salle not found");
+    }
+
+    const seance = this.seanceRepository.create({
+      ...createSeanceDto,salle:salle
+    });
+
+    return this.seanceRepository.save(seance);
   }
-
-
 
 
 
@@ -58,7 +67,7 @@ async  update(id: number, updateSeanceDto: UpdateSeanceDto):Promise<Seance> {
 if(!seance){
   throw new NotFoundException("seance not found")
 }
-const updateseance= await this.seanceRepository.preload({...updateSeanceDto,id})
+const updateseance= await this.seanceRepository.preload({...updateSeanceDto as DeepPartial<Seance>,id})
 if(!updateseance){
   throw new NotFoundException(`can not update a #${id} seance `)
 
