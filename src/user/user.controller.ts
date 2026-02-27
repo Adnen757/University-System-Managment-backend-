@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { response } from 'express';
 import { Code } from 'typeorm';
+import { updatePasswordDto } from './dto/updatePassword.dto';
 
 @Controller('user')
 export class UserController {
@@ -93,5 +94,26 @@ statusCode : 400,
 message :"user not found"+error.message
     })
    }
+  }
+
+
+
+
+
+
+  @Put('/update-password/:id')
+  async updatePassword(@Body()  UpdatPasswordDto : updatePasswordDto, @Res() res, @Param('id') id: number ){
+    try {
+      const updatedPassword = await this.userService.updatePassword(id, UpdatPasswordDto.oldPassword, UpdatPasswordDto.newPassword) ;
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: "password updated"
+      }) ;
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success : false,
+        message: "password not updated" + error
+      })
+    }
   }
 }

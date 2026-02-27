@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus, UseGuards } from '@nestjs/common';
 import { AnneeUniversitaireService } from './annee-universitaire.service';
 import { CreateAnneeUniversitaireDto } from './dto/create-annee-universitaire.dto';
 import { UpdateAnneeUniversitaireDto } from './dto/update-annee-universitaire.dto';
 import { response } from 'express';
-
+import { AccessTokenGuard } from 'src/common/guards/accesToken.guard';
+@UseGuards(AccessTokenGuard)
 @Controller('annee-universitaire')
 export class AnneeUniversitaireController {
   constructor(private readonly anneeUniversitaireService: AnneeUniversitaireService) {}

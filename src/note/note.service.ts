@@ -1,26 +1,77 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Note } from './entities/note.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class NoteService {
-  create(createNoteDto: CreateNoteDto) {
-    return 'This action adds a new note';
+constructor(
+   @InjectRepository (Note) private noteRepository:Repository<Note>
+  ){
+
   }
 
-  findAll() {
-    return `This action returns all note`;
+
+ async create(createNoteDto: CreateNoteDto):Promise<Note> {
+
+      const newNote =await this.noteRepository.create(createNoteDto)
+   return this.noteRepository.save(newNote)
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} note`;
+
+
+
+async  findAll() :Promise<Note[]>{
+       const note=await this.noteRepository.find()
+                  if(note.length===0){
+                    throw new NotFoundException("data not found")
+                  }
+                  return note
   }
 
-  update(id: number, updateNoteDto: UpdateNoteDto) {
-    return `This action updates a #${id} note`;
+
+
+
+
+ async findOne(id: number) :Promise<Note>{
+    const note =await this.noteRepository.findOneBy({id})
+if(!note){
+  throw new NotFoundException("note not found")
+}
+return note
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} note`;
+
+
+
+
+
+ async update(id: number, updateNoteDto: UpdateNoteDto):Promise<Note> {
+         const note =await this.noteRepository.findOneBy({id})
+if(!note){
+  throw new NotFoundException("note not found")
+}
+const updatenote= await this.noteRepository.preload({...updateNoteDto,id})
+if(!updatenote){
+  throw new NotFoundException(`can not update a #${id} note `)
+
+}
+return this.noteRepository.save(updatenote)
+  }
+
+
+
+
+
+async  remove(id: number) {
+          const note =await this.noteRepository.findOneBy({id})
+if(!note){
+  throw new NotFoundException("note not found")
+ 
+}
+ await this.noteRepository.delete(id)
+ return id
   }
 }

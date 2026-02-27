@@ -76,7 +76,7 @@ message :"error data not found"+error.message
   try {
     const etudiant=await this.etudiantService.findOne(id)
     return response.status(HttpStatus.OK).json({
-        message:"this all etudiant ",etudiant
+        message:" etudiant de id "+id+" est : ",etudiant
       })
     
    } catch (error) {

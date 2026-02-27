@@ -3,14 +3,16 @@ import { CreatePresenceDto } from './dto/create-presence.dto';
 import { UpdatePresenceDto } from './dto/update-presence.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Presence } from './entities/presence.entity';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
+import { Etudiant } from 'src/etudiant/entities/etudiant.entity';
 
 @Injectable()
 export class PresenceService {
 
 
 constructor(
-   @InjectRepository(Presence) private presenceRepository:Repository<Presence>
+   @InjectRepository(Presence) private presenceRepository:Repository<Presence>,
+   @InjectRepository(Etudiant) private etudiantRepository:Repository<Etudiant>
   ){
 
   }
@@ -18,7 +20,17 @@ constructor(
 
 
 async  create(createPresenceDto: CreatePresenceDto):Promise<Presence> {
-     const newpresence =await this.presenceRepository.create(createPresenceDto)
+
+const etudiant = await this.etudiantRepository.findOne({where:{id:createPresenceDto.etudiant}, relations:["presence"]})
+    if(!etudiant){
+      throw new NotFoundException("etudiant not found")
+
+    }
+
+
+
+
+     const newpresence =await this.presenceRepository.create({...createPresenceDto, etudiant:etudiant})
    return this.presenceRepository.save(newpresence)
   }
 
@@ -60,7 +72,7 @@ async  update(id: number, updatePresenceDto: UpdatePresenceDto):Promise<Presence
 if(!presence){
   throw new NotFoundException("presence not found")
 }
-const updatedpresence= await this.presenceRepository.preload({...updatePresenceDto,id})
+const updatedpresence= await this.presenceRepository.preload({...updatePresenceDto as DeepPartial<Presence>,id})
 if(!updatedpresence){
   throw new NotFoundException(`can not update a #${id} presence `)
 

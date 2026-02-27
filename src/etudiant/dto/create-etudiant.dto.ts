@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
 import { CreateUserDto } from "src/user/dto/create-user.dto"
 
 export class CreateEtudiantDto extends CreateUserDto {
@@ -18,6 +18,9 @@ export class CreateEtudiantDto extends CreateUserDto {
   @IsOptional()
 
 photo?:string
+
+
+
 
 
 }

@@ -1,31 +1,39 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-export enum presenceType{
-    PRESENT="PRESENT",
-    ABSENT="ABSENT",
-    RETARD="RETARD",
-    JUSTIFIE="JUSTIFIE",    
-    
+import { Etudiant } from "src/etudiant/entities/etudiant.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+export enum presenceType {
+     PRESENT = "PRESENT",
+     ABSENT = "ABSENT",
+     RETARD = "RETARD",
+     JUSTIFIE = "JUSTIFIE",
+
 }
-export enum methodeType{
-    MANUEL="MANUEL",
-    EMPREINTE="EMPREINTE",
-    FACIAL="FACIAL",
-       
-    
+export enum methodeType {
+     MANUEL = "MANUEL",
+     EMPREINTE = "EMPREINTE",
+     FACIAL = "FACIAL",
+
+
 }
 @Entity("Presence")
 export class Presence {
 
 
-    @PrimaryGeneratedColumn()
-     id:number
+     @PrimaryGeneratedColumn()
+     id: number
 
-@Column({type:"enum", enum:presenceType})
+     @Column({ type: "enum", enum: presenceType })
      statut: presenceType;
 
-@Column({type:"enum", enum:methodeType})
+     @Column({ type: "enum", enum: methodeType })
      methode: methodeType;
 
-@Column()
+     @Column()
      heureArrivee: string;
+
+     @ManyToOne(() => Etudiant, (etudiant) => etudiant.presences, { onDelete: 'CASCADE' })
+     @JoinColumn({ name: 'etudiantId' })
+     etudiant: Etudiant;
+
+     @Column({ nullable: true })
+     etudiantId: number;
 }

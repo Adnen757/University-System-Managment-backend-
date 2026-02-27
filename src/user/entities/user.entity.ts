@@ -14,9 +14,18 @@ export class User extends BaseEntity {
 @PrimaryGeneratedColumn()
 id:number
 
+
+
+@Column({type:"varchar",nullable:true})
+refreshToken:string |  null
+
+
+
+
+
 @Column()
 fullname:string
-@Column()
+@Column({unique:true   })
 email:string
 @Column()
 password:string

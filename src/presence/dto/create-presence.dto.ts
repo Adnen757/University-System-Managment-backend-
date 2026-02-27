@@ -1,17 +1,17 @@
-import { IsNotEmpty, IsString } from "class-validator";
-export enum presenceType{
-    PRESENT="PRESENT",
-    ABSENT="ABSENT",
-    RETARD="RETARD",
-    JUSTIFIE="JUSTIFIE",    
-    
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+export enum presenceType {
+    PRESENT = "PRESENT",
+    ABSENT = "ABSENT",
+    RETARD = "RETARD",
+    JUSTIFIE = "JUSTIFIE",
+
 }
-export enum methodeType{
-    MANUEL="MANUEL",
-    EMPREINTE="EMPREINTE",
-    FACIAL="FACIAL",
-       
-    
+export enum methodeType {
+    MANUEL = "MANUEL",
+    EMPREINTE = "EMPREINTE",
+    FACIAL = "FACIAL",
+
+
 }
 export class CreatePresenceDto {
 
@@ -23,6 +23,12 @@ export class CreatePresenceDto {
     @IsString()
     heureArrivee: string;
 
-     @IsNotEmpty()
+    @IsNotEmpty()
     methode: methodeType;
+
+
+    @IsNumber()
+    @IsNotEmpty()
+    etudiant: number
+
 }

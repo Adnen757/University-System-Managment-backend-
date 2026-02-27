@@ -12,5 +12,6 @@ import { Administrateur } from 'src/administrateur/entities/administrateur.entit
   imports:[TypeOrmModule.forFeature([User,Etudiant,Professeur,ChefDepartement,Administrateur])],
   controllers: [UserController],
   providers: [UserService],
+  exports:[UserService]
 })
 export class UserModule {}

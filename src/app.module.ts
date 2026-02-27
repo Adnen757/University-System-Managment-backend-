@@ -19,6 +19,9 @@ import { NoteModule } from './note/note.module';
 import { RessourcPedagogiquesModule } from './ressourc-pedagogiques/ressourc-pedagogiques.module';
 import { MessageModule } from './message/message.module';
 import { AdministrateurModule } from './administrateur/administrateur.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { MailerModule } from '@nestjs-modules/mailer/dist/mailer.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -32,7 +35,29 @@ autoLoadEntities:true,
 entities:[__dirname + "/**/*.entity{.ts,.js}"],
 synchronize:true,
 
-  }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, PresenceModule, JustificatifAbsenceModule, MatiereModule, NoteModule, RessourcPedagogiquesModule, MessageModule, AdministrateurModule],
+
+
+
+  }),
+  MailerModule.forRoot({
+      transport: {
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false, // Use TLS
+        tls: {
+  rejectUnauthorized: false
+},
+        auth: {
+          user: "adnenhajlaoui2@gmail.com",
+          pass: "xsyq ehaw vysq ogxj",
+        },
+      },
+      defaults: {
+        from: process.env.MAIL_FROM,
+      },
+    }),
+  
+  ConfigModule.forRoot({isGlobal:true}), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, PresenceModule, JustificatifAbsenceModule, MatiereModule, NoteModule, RessourcPedagogiquesModule, MessageModule, AdministrateurModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

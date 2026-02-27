@@ -16,6 +16,12 @@ constructor(
 
 
   async create(createEtudiantDto: CreateEtudiantDto):Promise<Etudiant> {
+
+
+
+
+
+    
     const newetudiant =await this.etudiantRepository.create({...createEtudiantDto , role:"etudiant"})
    return this.etudiantRepository.save(newetudiant)
   }
