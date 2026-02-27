@@ -16,6 +16,7 @@ import { EvaluationModule } from './evaluation/evaluation.module';
 import { NotificationModule } from './notification/notification.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -26,11 +27,33 @@ username:"postgres",
 password:"12345",
 database:"projet1",
 autoLoadEntities:true,
-entities:[__dirname + "/**/*.entity{.ts,.js}"],
+entities:[__dirname + "/**/*.entity{.ts,.js}"
+
+  
+],
 synchronize:true,
 
-  }), ConfigModule.forRoot({isGlobal: true}),UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, EvaluationModule , NotificationModule, AuthModule],
+
+
+  }),MailerModule.forRoot({
+      transport: {
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false, // Use TLS
+        tls: {
+	rejectUnauthorized: false
+},
+        auth: {
+          user: "hamedblg29@gmail.com",
+          pass: "fwan skfx vfhm gswd",
+        },
+      },
+      // defaults: {
+      //   from:"Hamed  <hamedblg29@gmail.com>",
+      // },
+    }), ConfigModule.forRoot({isGlobal: true}),UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, EvaluationModule , NotificationModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
+
 })
 export class AppModule {}

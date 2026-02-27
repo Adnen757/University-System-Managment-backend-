@@ -31,4 +31,14 @@ signin(@Body() data:AuthDto) {
   
      return this.authService.refreshToken(userId, refreshToken);
   }
+
+  @Post("/forgetpassword")
+  forgetPassword(@Body() data: AuthDto) {
+    return this.authService.forgotPassword(data.email);
+  }
+
+  @Post("/reset/:token")
+  resetPassword(@Body() data: AuthDto, @Param("token") token: string) {
+    return this.authService.resetPassword(token, data.password);
+  }
 }
