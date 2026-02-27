@@ -66,7 +66,7 @@ message :"user not found"+error.message
      try {
     const user=await this.userService.update(id,updateUserDto)
     return response.status(HttpStatus.OK).json({
-        message:" user update avec succsefly",user
+        message:" user update with succsefly",user
       })
     
    } catch (error) {

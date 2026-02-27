@@ -20,40 +20,40 @@ import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
-type:"postgres",
-host:"localhost",
-port:5432,
-username:"postgres",
-password:"12345",
-database:"projet1",
-autoLoadEntities:true,
-entities:[__dirname + "/**/*.entity{.ts,.js}"
-
-  
-],
-synchronize:true,
+    type: "postgres",
+    host: "localhost",
+    port: 5432,
+    username: "postgres",
+    password: "12345",
+    //database:"projet1",
+    autoLoadEntities: true,
+    entities: [__dirname + "/**/*.entity{.ts,.js}"
 
 
+    ],
+    synchronize: true,
 
-  }),MailerModule.forRoot({
-      transport: {
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false, // Use TLS
-        tls: {
-	rejectUnauthorized: false
-},
-        auth: {
-          user: "hamedblg29@gmail.com",
-          pass: "fwan skfx vfhm gswd",
-        },
+
+
+  }), MailerModule.forRoot({
+    transport: {
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // Use TLS
+      tls: {
+        rejectUnauthorized: false
       },
-      // defaults: {
-      //   from:"Hamed  <hamedblg29@gmail.com>",
-      // },
-    }), ConfigModule.forRoot({isGlobal: true}),UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, EvaluationModule , NotificationModule, AuthModule],
+      auth: {
+        user: "hamedblg29@gmail.com",
+        pass: "fwan skfx vfhm gswd",
+      },
+    },
+    // defaults: {
+    //   from:"Hamed  <hamedblg29@gmail.com>",
+    // },
+  }), ConfigModule.forRoot({ isGlobal: true }), UserModule, DepartementModule, EtudiantModule, ProfesseurModule, ChefDepartementModule, AnnonceModule, SalleModule, SeanceModule, AnneeUniversitaireModule, SemestreModule, EvaluationModule, NotificationModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 
 })
-export class AppModule {}
+export class AppModule { }
